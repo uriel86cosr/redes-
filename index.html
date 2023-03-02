@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes</title>
+</head>
+<style>
+    #sitio{
+        font-size: 5rem;
+        background-color: rgb(0, 0, 0);
+        text-align: center;
+        padding: 2rem;
+        color: rgb(45, 27, 122);
+    }
+</style>
+<body>
+    <input data-jscolor="{value: #FFFFFF}", oninput="update(this.jscolor)">
+    <div id="sitio">
+        Redes Neuronales
+    </div>    
+    <script src="brain.js"></script>
+    <script src="jscolor.min.js"></script>
+    <script type="text/javascript">
+
+        var red = new brain.NeuralNetwork();
+
+        red.train([
+            {input:{rojo:0,verde:0,azul:0},output: {color:1}},
+            {input:{rojo:1,verde:1,azul:1},output: {color:0}},
+            {input:{rojo:0,verde:1,azul:0},output: {color:0}}
+        ]);
+
+        function update(color){
+
+            var rgb = [color.channels.r,color.channels.g, color.channels.b];
+            console.log(rgb);
+
+            var div = document.getElementById("sitio");
+            div.style.background = color.toHEXString();
+
+            var entrada={
+                rojo: rgb[0]/255,
+                verde: rgb[1]/255,
+                azul: rgb[2]/255,
+            };
+
+            var resultado = red.run(entrada);
+            console.log(resultado);
+
+            if(resultado.color > .6){
+                div.style.color='white';
+            }
+            else{
+                div.style.color='black';
+            }
+        }
+    </script>
+</body>
+</html>
